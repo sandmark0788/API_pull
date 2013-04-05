@@ -1,0 +1,71 @@
+LENOVA T430s
+
+
+rm(list = ls())
+TOTALptm <- proc.time() ## http://stat.ethz.ch/R-manual/R-patched/library/base/html/proc.time.html
+####################################################################
+##                                                                ##
+##            Define Parameters, token and REDCap url             ##
+##                                                                ##
+
+mainDir <- "C:\\Users\\Arianna\\Documents\\UCSF\\R\\"
+
+# define a data directory
+dataDir <- paste0(mainDir, "data\\")
+
+# define a source directory
+
+syntaxDir <- paste0(mainDir, "syntax\\")
+
+# location of webcertificate
+REDCap.crt <- paste0(mainDir, "token-and-ssl-verifypeer\\redcap.ucsfopenresearch.crt")
+
+
+# location of webcertificate
+cacert.pem <- paste0(mainDir, "token-and-ssl-verifypeer\\cacert.pem")
+
+
+# Read API token from keys folder
+Redcap.token <- readLines(paste0(mainDir, "token-and-ssl-verifypeer\\redcap.token.txt")) 
+
+# <- 'https://redcap.WEBSITE.edu/api/'
+REDcap.URL  <- 'https://redcap.ucsfopenresearch.org/api/'
+
+####################################################################
+##                                                                ##
+##     Read data of https://redcap.ucsfopenresearch.org/api/      ##
+##     This section calls up RCurl an librarry                                                       ##
+####################################################################
+options(repos=c("http://cran.at.r-project.org/"))
+install.packages("RCurl", dependencies = TRUE)
+require(RCurl)
+??RCurl
+
+CURL
+
+
+RAW.API <- postForm(REDcap.URL, token=Redcap.token, content="record", type="flat", format="csv", rawOrLabel="raw", .opts=curlOptions(ssl.verifypeer=TRUE, cainfo=REDCap.crt, verbose=FALSE))
+
+cacert.pem
+
+
+RAW.API <- postForm(REDcap.URL, token=Redcap.token, content="record", type="flat", format="csv", rawOrLabel="raw", .opts=curlOptions(ssl.verifypeer=TRUE, cainfo=cacert.pem, verbose=FALSE))
+
+data[1:10,1:10]
+
+
+?postForm
+cainfo="cacert.pem"
+
+####################################################################
+##                                                                ##
+##      Transform and subset data workable R data frame           ##
+##                                                                ##
+####################################################################
+data <- read.table(file = textConnection(RAW.API), header = TRUE, sep = ",", na.strings = "", stringsAsFactors = FALSE)
+# rm(RAW.API)
+
+####################################################################
+##                                                                ##
+##             .                   ##
+##                                                                ##
