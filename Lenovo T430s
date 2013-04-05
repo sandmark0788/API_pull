@@ -56,6 +56,9 @@ data[1:10,1:10]
 ##some other jazz to try pc pull issue
 RAW.API <- postForm(REDcap.URL, token=Redcap.token, content="record", type="flat", format="csv", rawOrLabel="raw", options(RCurlOptions=list(verbose=FALSE, cainfo=system.file("REDCap.crt", "cacert.pem", package="RCurl"), ssl.verifypeer = TRUE)))
 
+options(RCurlOptions = list(verbose = FALSE, capath = system.file("RE", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
+
+
 ?postForm
 cainfo="cacert.pem"
 
